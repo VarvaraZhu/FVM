@@ -8,26 +8,26 @@
 #include "calculateGeom.h"
 #include "initiateFields.h"
 #include "coord.h"
+#include "calculateOperators.h"
 
 int main(int argc, char* argv[]){
 
 //  Mesh file's name is read from cmd and contained in argv[1]
 
-  if (argc > 1) {
-    std::cout << "Mesh will be read from " << argv[1] << std::endl;
-  }
+   /* if (argc > 1)
+        std::cout << "Mesh will be read from " << argv[1] << std::endl;
 
-  else {
-    std::cout << "Please, set the mesh file" << std::endl;
-    return 0;
-  }
+    else {
+        std::cout << "Please, set the mesh file" << std::endl;
+        return 0;
+    }*/
 
-  std::string outputFileName = "output.plt";
-  std::string inputFileName = argv[1];
+    std::string outputFileName = "output.plt";
+    std::string inputFileName = "base.msh";
 
-  std::fstream inputMesh(inputFileName); // name of file with computational mesh
+    std::fstream inputMesh(inputFileName); // name of file with computational mesh
 
-  size_t NI, NJ;
+    size_t NI, NJ;
 
   //********************** Read Mesh File **************************************
   matrixVec mesh;
@@ -85,6 +85,7 @@ InitiatePressureField(P, cellCenter);
 //********************** Calculate Gradient ************************************
 std::cout << "Calculate gradient..." << std::endl;
 
+calculateGradient(P, gradP, cellVolumes, cellCenter, iFaceCenter, iFaceVector, jFaceCenter, jFaceVector);
 
 //********************** Output Fields *****************************************
 std::cout << "Output fields in file: " << outputFileName << std::endl;
@@ -93,30 +94,42 @@ std::cout << "Output fields in file: " << outputFileName << std::endl;
    outputData.open(outputFileName);
    if (outputData.is_open())
    {
-     outputData << "VARIABLES =  \"X\",\"Y\",\"P\"" << std::endl;
+     outputData << "VARIABLES =  \"X\",\"Y\",\"P\",\"gradPx\",\"gradPy\"" << std::endl;
      outputData << "ZONE T=\"ZONE 001\"" << std::endl;
 
      outputData << "I=" << NI << " J=" << NJ <<", DATAPACKING=BLOCK, VARLOCATION=([3-20]=CELLCENTERED)"<< std::endl;
 
      //outputData.setf(ios::std::scientific);
 
-     for (int j = 0; j < NJ; j++){
-       for (int i = 0; i < NI; i++) {
+     for (int j = 0; j != NJ; j++){
+       for (int i = 0; i != NI; i++) {
          outputData << mesh[i][j].x << " ";
        }
      }
      outputData << std::endl;
 
-     for (int j = 0; j < NJ; j++){
-       for (int i = 0; i < NI; i++) {
+     for (int j = 0; j != NJ; j++){
+       for (int i = 0; i != NI; i++) {
          outputData << mesh[i][j].y << " ";
        }
      }
      outputData << std::endl;
 
-     for (int j = 1; j < NJ; j++){
-       for (int i = 1; i < NI; i++) {
+     for (int j = 1; j != NJ; j++){
+       for (int i = 1; i != NI; i++) {
          outputData << P[i][j] << " ";
+       }
+     }
+
+     for (int j = 1; j != NJ; j++){
+       for (int i = 1; i != NI; i++) {
+         outputData << gradP[i][j].x << " ";
+       }
+     }
+
+     for (int j = 1; j != NJ; j++){
+       for (int i = 1; i != NI; i++) {
+         outputData << gradP[i][j].y << " ";
        }
      }
 
