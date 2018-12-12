@@ -1,0 +1,43 @@
+blade.msh
+0
+OLS
+10
+SOU
+2
+1
+out.plt
+
+1. Mesh file name (string): 
+	base.msh
+	fine.msh
+	skew.msh
+	wedge.msh
+	blade.msh
+
+2. Choose functions for initialisation or Pressure and Velocity fields
+	1 - linear
+	0 - non-linear
+
+3. Gradient calculation method(string):
+	Gauss
+	iterGauss
+	OLS
+
+4. Number of iterations for iterGauss(size_t). (1 for any other method)
+
+5. Scheme for calculation scalar variable on a cell face
+	Central
+	Upwind
+	SOU
+
+6. Laplacian calculation: order of derivatives' approximation on boarders
+	1 - first
+	2 - second 
+
+7. Laplacian calculation scheme correction for non-orthogonsl grids
+	1 - with correction
+	0 - without correction  
+
+8. Output file name (string):
+	*.plt
+ 
