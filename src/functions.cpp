@@ -1,5 +1,8 @@
 #include "functions.h"
 
+#include <cmath>
+#include <cstddef>
+
 //Fuction defining Pressure field
 double Pressure(const coord &a, const bool & linear){
   //return (a.x + a.y + 2 * a.x * a.x + a.y * a.y);
@@ -57,7 +60,7 @@ double error(const coord &a, const coord &b) {
 
 //Error function for vector variable
 double error(const double &a, const double &b) {
-  return abs(a - b) / abs(b);
+  return std::abs(a - b) / std::abs(b);
 }
 
 //linear interpolation of scalar variable

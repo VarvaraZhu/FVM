@@ -1,5 +1,7 @@
 #pragma once
+
 #include <vector>
+#include <string>
 
 bool openBinStream(const std::string& fileName,
                       const std::vector<std::string>& vars,
